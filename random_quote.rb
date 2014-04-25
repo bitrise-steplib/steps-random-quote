@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'json'
 
-uri = URI.parse("http://www.iheartquotes.com/api/v1/random?format=json")
+uri = URI.parse("http://www.iheartquotes.com/api/v1/random?format=json&source=humorix_misc")
 json_result = uri.read
 parsed_result = JSON.parse(json_result)
 quote_text = parsed_result['quote']
