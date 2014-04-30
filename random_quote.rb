@@ -21,4 +21,4 @@ puts
 escaped_quote_text = bash_string_escape(quote_text, false)
 puts "Escaped:"
 puts escaped_quote_text
-# File.open(File.join(ENV['HOME'], '.bash_profile'), 'a') { |f| f.write("export RANDOM_QUOTE=\"#{quote_text}\"\n") }
+File.open(File.join(ENV['HOME'], '.bash_profile'), 'a') { |f| f.write("export RANDOM_QUOTE=\"#{quote_text}\"\n") }
