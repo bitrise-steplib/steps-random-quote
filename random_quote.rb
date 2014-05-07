@@ -9,6 +9,7 @@ begin
 
   parsed_result = JSON.parse(json_result)
   quote_text = parsed_result['quote']
+
   # puts quote_text
   # quote_text.tr!('\\n', '<br>')
   quote_text.gsub!(/\r\n|\r|\n/, "<br>")
@@ -23,7 +24,7 @@ begin
   escaped_quote_text = bash_string_escape(quote_text, false)
   puts "Escaped:"
   puts escaped_quote_text
-  File.open(File.join(ENV['HOME'], '.bash_profile'), 'a') { |f| f.write("export RANDOM_QUOTE=\"#{quote_text}\"\n") }
+  File.open(File.join(ENV['HOME'], '.bash_profile'), 'a') { |f| f.write("export RANDOM_QUOTE=\"#{escaped_quote_text}\"\n") }
 rescue => ex
   puts "Request error: #{ex}"
   puts " [i] uri_string: #{uri_string}"
