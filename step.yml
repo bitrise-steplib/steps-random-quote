@@ -1,0 +1,9 @@
+name: Random Quote
+description: |
+  Prints a random quote and saves it into the $RANDOM_QUOTE environment variable (adds it to the ~/.bash_profile)
+  Uses the http://www.iheartquotes.com API
+
+outputs:
+  -
+    title: A random quote
+    mapped_to: RANDOM_QUOTE
