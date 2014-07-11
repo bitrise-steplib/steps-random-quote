@@ -1,3 +1,0 @@
-[submodule "bash-string-escaper"]
-	path = bash-string-escaper
-	url = https://github.com/concretebuilder/steps-utils-bash-string-escaper.git
