@@ -37,14 +37,14 @@ begin
 
   puts "Original:"
   puts quote_text
-
+  puts_section_to_formatted_output("    #{quote_text})")
+  
   puts
 
   escaped_quote_text = bash_string_escape(quote_text, false)
   puts "Escaped:"
   puts escaped_quote_text
   File.open(File.join(ENV['HOME'], '.bash_profile'), 'a') { |f| f.write("export RANDOM_QUOTE=\"#{escaped_quote_text}\"\n") }
-  puts_section_to_formatted_output("\"#{escaped_quote_text}\"")
 rescue => ex
   puts "Request error: #{ex}"
   err_msg = "Exception happened: #{ex}"
