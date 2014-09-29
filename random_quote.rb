@@ -28,7 +28,10 @@ begin
 
   parsed_result = JSON.parse(json_result)
   raw_quote_test = parsed_result['quote']
-  puts_section_to_formatted_output("    #{raw_quote_test})")
+
+  md_prepared_quote = ""
+  raw_quote_test.each_line {|line| md_prepared_quote << "    #{line}"}
+  puts_section_to_formatted_output(md_prepared_quote)
 
   quote_text = raw_quote_test
 
