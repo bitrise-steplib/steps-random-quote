@@ -27,7 +27,13 @@ begin
   json_result = uri.read
 
   parsed_result = JSON.parse(json_result)
-  quote_text = parsed_result['quote']
+  raw_quote_test = parsed_result['quote']
+
+  md_prepared_quote = ""
+  raw_quote_test.each_line {|line| md_prepared_quote << "    #{line}"}
+  puts_section_to_formatted_output(md_prepared_quote)
+
+  quote_text = raw_quote_test
 
   # puts quote_text
   # quote_text.tr!('\\n', '<br>')
@@ -37,7 +43,6 @@ begin
 
   puts "Original:"
   puts quote_text
-  puts_section_to_formatted_output("    #{quote_text})")
   
   puts
 
@@ -54,5 +59,5 @@ rescue => ex
   unless err_msg.nil?
     puts_section_to_formatted_output(err_msg)
   end
-  puts_section_to_formatted_output("Check the Logs for details.")
+  puts_section_to_formatted_output("Check the Logs for more details.")
 end
