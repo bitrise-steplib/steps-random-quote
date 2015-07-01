@@ -1,8 +1,0 @@
-{
-	"dep_locks": [
-		{
-			"url": "https://github.com/bitrise-io/steps-utils-bash-string-escaper.git",
-			"revision": "1d3539e3855320b163bb2a574daec501123ecfd8"
-		}
-	]
-}
