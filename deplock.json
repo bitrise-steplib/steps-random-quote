@@ -1,0 +1,8 @@
+{
+	"dep_locks": [
+		{
+			"url": "https://github.com/gkiki90/go-markdown-log.git",
+			"revision": "1463c6632ec369e94985b6217d4d531db3ef8d1e"
+		}
+	]
+}

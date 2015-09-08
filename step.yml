@@ -1,7 +1,7 @@
 title: Random Quote
 summary: Generates a random quote
 description: |
-  Prints a random quote and saves it into the $RANDOM_QUOTE environment variable (adds it to the ~/.bash_profile)
+  Prints a random quote and saves it into the $quote environment variable (adds it to the ~/.bash_profile)
   Uses the http://www.iheartquotes.com API
 website: https://github.com/gkiki90/steps-random-quote
 source_code_url: https://github.com/gkiki90/steps-random-quote
@@ -17,7 +17,14 @@ is_skippable: false
 dependencies:
   - manager: brew
     name: go
+run_if: ""
+inputs: []
 outputs:
-  - RANDOM_QUOTE:
+  - quote:
     opts:
       title: the quote
+      summary: ""
+      description: ""
+      is_expand: false
+      is_required: true
+      is_dont_change_value: true

@@ -27,6 +27,7 @@ func successMessageToOutput(msg string) {
 	markdownlog.SectionToOutput(message)
 }
 
+// RunPipedEnvmanAdd ...
 func RunPipedEnvmanAdd(key, value string) error {
 	args := []string{"add", "-k", key}
 	envman := exec.Command("envman", args...)
@@ -42,7 +43,7 @@ func main() {
 	markdownlog.Setup(pth)
 	err := markdownlog.ClearLogFile()
 	if err != nil {
-		fmt.Errorf("Failed to clear log file", err)
+		fmt.Errorf("Failed to clear log file, err: %s", err)
 	}
 
 	// request
@@ -50,7 +51,7 @@ func main() {
 
 	request, err := http.NewRequest("GET", urlString, nil)
 	if err != nil {
-		errorMessageToOutput(fmt.Sprintf("Failed to create requestuest:", err))
+		errorMessageToOutput(fmt.Sprintf("Failed to create requestuest, err: %s", err))
 		os.Exit(1)
 	}
 
@@ -64,12 +65,12 @@ func main() {
 	var data map[string]interface{}
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		errorMessageToOutput(fmt.Sprintf("Failed to read request body:", err))
+		errorMessageToOutput(fmt.Sprintf("Failed to read request body, err: %s", err))
 		os.Exit(1)
 	}
 	err = json.Unmarshal(bodyBytes, &data)
 	if err != nil {
-		errorMessageToOutput(fmt.Sprintf("Json unmarshal failed:", err))
+		errorMessageToOutput(fmt.Sprintf("Json unmarshal failed, err: %s", err))
 		os.Exit(1)
 	}
 
@@ -77,26 +78,26 @@ func main() {
 		value := data["value"]
 		valueMap, isKind := value.(map[string]interface{})
 		if isKind == false {
-			errorMessageToOutput(fmt.Sprintf("Failed to convert response:", err))
+			errorMessageToOutput(fmt.Sprintf("Failed to convert response, err: %s", err))
 			os.Exit(1)
 		}
 
 		joke := valueMap["joke"].(string)
 		joke, err = url.QueryUnescape(joke)
 		if err != nil {
-			errorMessageToOutput(fmt.Sprintf("Failed to url decode response:", err))
+			errorMessageToOutput(fmt.Sprintf("Failed to url decode response, err: %s", err))
 			os.Exit(1)
 		}
 
-		err := RunPipedEnvmanAdd("RANDOM_QUOTE", joke)
+		err := RunPipedEnvmanAdd("quote", joke)
 		if err != nil {
-			errorMessageToOutput(fmt.Sprintf("Failed to add output to envman:", err))
+			errorMessageToOutput(fmt.Sprintf("Failed to add output to envman, err: %s", err))
 			os.Exit(1)
 		}
 
 		successMessageToOutput(fmt.Sprintf("%v", valueMap["joke"]))
 	} else {
-		errorMsg := fmt.Sprintf("Status code: %s Body: %s", response.StatusCode, response.Body)
+		errorMsg := fmt.Sprintf("Status code: %d Body: %s", response.StatusCode, response.Body)
 		errorMessageToOutput(errorMsg)
 
 		os.Exit(1)
