@@ -1,8 +1,8 @@
 {
 	"deps": [
-			{
-					"url": "https://github.com/bitrise-io/steps-utils-bash-string-escaper.git",
-					"store_path": "bash-string-escaper"
-			}
+		{
+			"url": "https://github.com/gkiki90/go-markdown-log.git",
+			"store_path": "markdownlog"
+		}
 	]
 }
