@@ -41,10 +41,6 @@ func main() {
 	// init / cleanup the formatted output
 	pth := os.Getenv("BITRISE_STEP_FORMATTED_OUTPUT_FILE_PATH")
 	markdownlog.Setup(pth)
-	err := markdownlog.ClearLogFile()
-	if err != nil {
-		fmt.Errorf("Failed to clear log file, err: %s", err)
-	}
 
 	// request
 	urlString := "http://api.icndb.com/jokes/random"
@@ -89,7 +85,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		err := RunPipedEnvmanAdd("quote", joke)
+		err := RunPipedEnvmanAdd("RANDOM_QUOTE", joke)
 		if err != nil {
 			errorMessageToOutput(fmt.Sprintf("Failed to add output to envman, err: %s", err))
 			os.Exit(1)

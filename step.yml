@@ -20,7 +20,7 @@ dependencies:
 run_if: ""
 inputs: []
 outputs:
-  - quote:
+  - RANDOM_QUOTE:
     opts:
       title: the quote
       summary: ""
