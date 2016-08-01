@@ -95,7 +95,15 @@ func main() {
 		}
 
 		if response.StatusCode != 200 {
-			requestErr = fmt.Errorf("Request finished with non success status code: %d", response.StatusCode)
+			bodyBytes, readErr := ioutil.ReadAll(response.Body)
+			if readErr != nil {
+				warn("Failed to read request body, err: %s", err)
+
+				requestErr = fmt.Errorf("Request finished with non success status code: (%d)", response.StatusCode)
+			} else {
+				requestErr = fmt.Errorf("Request finished with non success status code: (%d), response: (%s)", response.StatusCode, string(bodyBytes))
+			}
+
 			warn("%d attempt failed:", attempt)
 			fmt.Println(requestErr.Error())
 		}
