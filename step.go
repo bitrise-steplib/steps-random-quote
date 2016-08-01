@@ -10,8 +10,6 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/going/toolkit/log"
-
 	"./retry"
 )
 
@@ -87,7 +85,7 @@ func main() {
 		var requestErr error
 
 		if attempt > 0 {
-			log.Warn("Retrying...")
+			warn("Retrying...")
 		}
 
 		response, requestErr = client.Do(request)
