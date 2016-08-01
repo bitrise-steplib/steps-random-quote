@@ -16,9 +16,9 @@ type_tags:
 is_requires_admin_user: false
 is_always_run: false
 is_skippable: false
-dependencies:
-  - manager: brew
-    name: go
+deps:
+  brew:
+  - name: go
 run_if: ""
 inputs: []
 outputs:

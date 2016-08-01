@@ -1,8 +1,0 @@
-{
-	"deps": [
-		{
-			"url": "https://github.com/bitrise-io/go-markdown-log.git",
-			"store_path": "markdownlog"
-		}
-	]
-}
