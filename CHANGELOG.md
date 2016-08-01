@@ -1,6 +1,13 @@
-## Changelog (Current version: 3.0.1)
+## Changelog (Current version: 3.0.2)
 
 -----------------
+
+### 3.0.2 (2016 Aug 01)
+
+* [5bb846b] prepare for 3.0.2
+* [55dd3a4] Merge pull request #10 from bitrise-io/retry
+* [ba0beba] removed log dependency
+* [3bd4c0b] retry
 
 ### 3.0.1 (2016 Aug 01)
 
