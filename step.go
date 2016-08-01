@@ -9,10 +9,19 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/going/toolkit/log"
+
+	"./retry"
 )
 
 const (
 	urlString = "http://api.icndb.com/jokes/random"
+)
+
+const (
+	retryCount = 2
+	waitTime   = 20 //seconds
 )
 
 func fail(format string, v ...interface{}) {
@@ -64,46 +73,66 @@ func main() {
 	info("Getting random quote from: %s", urlString)
 
 	client := &http.Client{}
-	response, err := client.Do(request)
-	if err != nil {
-		fail("Failed to perform request, err: %s", err)
-	}
+	var response *http.Response
 
 	defer func() {
-		if err := response.Body.Close(); err != nil {
-			warn("Failed to close response body, error: %s", err)
+		if response != nil {
+			if err := response.Body.Close(); err != nil {
+				warn("Failed to close response body, error: %s", err)
+			}
 		}
 	}()
 
+	if err := retry.Times(retryCount).Wait(waitTime).Try(func(attempt uint) error {
+		var requestErr error
+
+		if attempt > 0 {
+			log.Warn("Retrying...")
+		}
+
+		response, requestErr = client.Do(request)
+		if requestErr != nil {
+			warn("%d attempt failed:", attempt)
+			fmt.Println(requestErr.Error())
+		}
+
+		if response.StatusCode != 200 {
+			requestErr = fmt.Errorf("Request finished with non success status code: %d", response.StatusCode)
+			warn("%d attempt failed:", attempt)
+			fmt.Println(requestErr.Error())
+		}
+
+		return requestErr
+	}); err != nil {
+		fail("Failed to perform request, error: %s", err)
+	}
+
+	// Parse body
 	bodyBytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		fail("Failed to read request body, err: %s", err)
 	}
 
-	if response.StatusCode == 200 {
-		var data map[string]interface{}
-		if err = json.Unmarshal(bodyBytes, &data); err != nil {
-			fail("Failed to unmarshal (%s), err: %s", string(bodyBytes), err)
-		}
-
-		value := data["value"]
-		valueMap, isKind := value.(map[string]interface{})
-		if isKind == false {
-			fail("Failed to convert response: %s", value)
-		}
-
-		joke := valueMap["joke"].(string)
-		joke, err = url.QueryUnescape(joke)
-		if err != nil {
-			fail("Failed to url decode response (%s), err: %s", joke, err)
-		}
-
-		if err := exportEnvironmentWithEnvman("RANDOM_QUOTE", joke); err != nil {
-			fail("Failed to add output to envman, err: %s", err)
-		}
-
-		done(joke)
-	} else {
-		fail("Status code: %d Body: %s", response.StatusCode, response.Body)
+	var data map[string]interface{}
+	if err = json.Unmarshal(bodyBytes, &data); err != nil {
+		fail("Failed to unmarshal (%s), err: %s", string(bodyBytes), err)
 	}
+
+	value := data["value"]
+	valueMap, isKind := value.(map[string]interface{})
+	if isKind == false {
+		fail("Failed to convert response: %s", value)
+	}
+
+	joke := valueMap["joke"].(string)
+	joke, err = url.QueryUnescape(joke)
+	if err != nil {
+		fail("Failed to url decode response (%s), err: %s", joke, err)
+	}
+
+	if err := exportEnvironmentWithEnvman("RANDOM_QUOTE", joke); err != nil {
+		fail("Failed to add output to envman, err: %s", err)
+	}
+
+	done(joke)
 }
