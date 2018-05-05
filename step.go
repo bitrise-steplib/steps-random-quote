@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	"os"
 	"os/exec"
 	"strings"
@@ -131,10 +131,9 @@ func main() {
 	}
 
 	joke := valueMap["joke"].(string)
-	joke, err = url.QueryUnescape(joke)
-	if err != nil {
-		fail("Failed to url decode response (%s), err: %s", joke, err)
-	}
+
+	// Jokes are HTML encoded
+	joke = html.UnescapeString(joke)
 
 	if err := exportEnvironmentWithEnvman("RANDOM_QUOTE", joke); err != nil {
 		fail("Failed to add output to envman, err: %s", err)
