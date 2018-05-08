@@ -1,6 +1,12 @@
-## Changelog (Current version: 3.0.2)
+## Changelog (Current version: 3.0.3)
 
 -----------------
+
+### 3.0.3 (2018 May 08)
+
+* [922dc6f] Prepare for 3.0.3
+* [835bcf6] The random quotes are HTML encoded, not URL encoded (#12)
+* [bb60a3b] print response if non success status code (#11)
 
 ### 3.0.2 (2016 Aug 01)
 
@@ -50,4 +56,4 @@
 
 -----------------
 
-Updated: 2016 Aug 01
+Updated: 2018 May 08
